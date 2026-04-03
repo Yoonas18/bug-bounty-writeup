@@ -1,0 +1,174 @@
+# Security Research Write-up: Server-Side Misconfiguration
+
+**Researcher:** Yoonus K Y  
+**Platform:** Independent Research / Bugcrowd  
+**Vulnerability Class:** Server-Side Misconfiguration  
+**Severity:** Medium  
+**Status:** Responsibly Disclosed — Issue appears to have been remediated  
+**Date of Discovery:** [Add your date]  
+
+> ⚠️ **Responsible Disclosure Notice:** The target organisation and specific domain are intentionally omitted from this write-up as the issue was found to be already remediated at the time of investigation. No sensitive data was accessed, exfiltrated, or exploited during this research. This write-up is published purely for educational purposes.
+
+---
+
+## 1. Summary
+
+During independent web application security research, I identified a **server-side misconfiguration** that exposed internal server behaviour and potentially sensitive technical information to unauthenticated users. While the issue appeared to have already been remediated by the time of my investigation, I documented the finding as a research exercise to demonstrate the identification and analysis process.
+
+---
+
+## 2. Background & Reconnaissance
+
+While performing passive and active reconnaissance on the target application, I began with standard enumeration techniques to understand the technology stack and attack surface.
+
+**Tools used:**
+- Burp Suite (traffic interception and analysis)
+- Nmap (port and service enumeration)
+- Browser developer tools (response header analysis)
+
+**Initial observations:**
+- The application was running on [e.g., Apache / Nginx / IIS — add your detail]
+- Standard HTTP headers were analysed for information disclosure
+- Directory and path enumeration was performed
+
+---
+
+## 3. Vulnerability Discovery
+
+### What I found
+
+During HTTP response analysis, I observed that the server was returning **verbose error messages and/or misconfigured response headers** that disclosed:
+
+- [Describe what you found — e.g., "Server version and OS information in HTTP headers"]
+- [e.g., "Directory listing enabled on a non-production path"]
+- [e.g., "Default configuration page accessible at /server-info or similar"]
+- [e.g., "Exposed .env or configuration file via path traversal or direct access"]
+
+> 📝 **Note for Yoonus:** Fill in the specific details of what you actually found here. Be specific — what endpoint? What did the response look like? What information was exposed?
+
+### Steps to reproduce
+
+1. Navigate to `https://[target-redacted]/[path]`
+2. Observe the HTTP response — specifically the `Server:`, `X-Powered-By:` headers, or response body
+3. Note the disclosed information: `[what was visible]`
+4. Confirm the misconfiguration by cross-referencing with known default configurations
+
+### Evidence
+
+**Request:**
+```http
+GET /[path-redacted] HTTP/1.1
+Host: [target-redacted]
+User-Agent: Mozilla/5.0
+```
+
+**Response (sanitised):**
+```http
+HTTP/1.1 200 OK
+Server: [version-redacted for disclosure]
+X-Powered-By: [technology-redacted]
+Content-Type: text/html
+
+[Response body showing misconfiguration — describe or sanitise as needed]
+```
+
+---
+
+## 4. Impact Analysis
+
+### What an attacker could do with this
+
+Server-side misconfigurations, depending on severity, can enable:
+
+- **Information disclosure** — exposing server version, OS, framework versions which help attackers select targeted exploits
+- **Attack surface mapping** — default pages and exposed paths reveal application structure
+- **Chained exploitation** — misconfiguration information is often the first step in a larger attack chain
+- **Compliance violations** — exposed headers and default configs can violate PCI-DSS and ISO 27001 requirements
+
+### Why it matters in the GCC / enterprise context
+
+Many enterprise applications in regulated industries (banking, government, healthcare) have strict requirements around information disclosure. Even seemingly minor misconfigurations can cause compliance failures and are commonly cited in penetration test reports.
+
+---
+
+## 5. CVSS Score (Estimated)
+
+| Metric | Value |
+|--------|-------|
+| Attack Vector | Network |
+| Attack Complexity | Low |
+| Privileges Required | None |
+| User Interaction | None |
+| Scope | Unchanged |
+| Confidentiality | Low |
+| Integrity | None |
+| Availability | None |
+| **Estimated CVSS v3.1** | **~5.3 (Medium)** |
+
+---
+
+## 6. Remediation Recommendations
+
+To fix this class of vulnerability, the following mitigations should be applied:
+
+**1. Remove or suppress verbose headers**
+```nginx
+# Nginx — hide server version
+server_tokens off;
+
+# Apache — suppress version in headers
+ServerTokens Prod
+ServerSignature Off
+```
+
+**2. Disable directory listing**
+```apache
+# Apache
+Options -Indexes
+```
+
+**3. Remove default pages and unused endpoints**
+- Delete default installation pages (e.g., `/server-info`, `/phpinfo.php`)
+- Restrict access to admin and diagnostic endpoints by IP allowlist
+
+**4. Implement a security headers policy**
+```
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+```
+
+**5. Regular configuration audits**
+- Include server configuration review in your penetration testing scope
+- Use tools like `nikto`, `testssl.sh`, or `nuclei` templates for automated config checks
+
+---
+
+## 7. What I Learned
+
+This finding reinforced several important lessons about real-world security research:
+
+- **Reconnaissance is everything.** HTTP headers, error pages, and default paths reveal far more about a target than most developers realise.
+- **Misconfigurations are underrated.** Many testers focus on code-level vulnerabilities and overlook server configuration as a finding class.
+- **Even "informational" findings have value.** While this finding was rated medium/informational, it demonstrates the kind of thorough methodology that separates good security assessments from checkbox exercises.
+- **Documentation matters.** Writing this up — even without a bounty payout — sharpens my ability to communicate findings clearly, which is a core skill for any penetration tester or security analyst.
+
+---
+
+## 8. References
+
+- [OWASP Security Misconfiguration (A05:2021)](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
+- [CWE-16: Configuration](https://cwe.mitre.org/data/definitions/16.html)
+- [Mozilla HTTP Headers Security Guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
+- [NIST SP 800-123: Guide to General Server Security](https://csrc.nist.gov/publications/detail/sp/800-123/final)
+
+---
+
+## 9. About the researcher
+
+**Yoonus K Y** is a cybersecurity professional and independent bug bounty researcher based in Kerala, India. He specialises in penetration testing, SOC operations, and application security research.
+
+- 🌐 [Portfolio](https://yoonas18.github.io/portfolio)
+- 💼 [LinkedIn](https://linkedin.com/in/yoonusky)
+- 🐛 [Bugcrowd](https://bugcrowd.com/Yoonas18)
+- 💻 [GitHub](https://github.com/Yoonas18)
