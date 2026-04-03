@@ -1,78 +1,103 @@
-🐛 Bug Bounty Writeups
+# 🐛 Bug Bounty Writeups
 
-A curated collection of real-world security findings, writeups, and research notes from my bug bounty hunting and independent security testing.
+A collection of real-world security findings discovered during bug bounty hunting and independent research.
 
-📌 About This Repository
+This repository focuses on **practical vulnerabilities with real impact**, not low-signal or automated scan results.
 
-This repository contains documented vulnerabilities I have discovered during:
+---
 
-Bug bounty programs (e.g. Bugcrowd, HackerOne)
-Independent web application security research
-Practice labs and real-world testing
+## 📌 What You’ll Find Here
 
-Each writeup focuses on:
+* Clear, structured vulnerability reports
+* Real attack scenarios and impact analysis
+* Reproducible steps and technical breakdowns
+* Focus on authentication, access control, and logic flaws
 
-Clear methodology
-Realistic impact analysis
-Practical exploitation (when applicable)
-Responsible disclosure principles
-⚠️ Responsible Disclosure
+---
 
-All writeups in this repository follow strict ethical guidelines:
+## 🗂️ Writeups
 
-No sensitive data is exposed
-Targets are anonymised where required
-Issues are either fixed or non-exploitable at the time of writing
-Content is shared for educational purposes only
-🗂️ Writeups
-1. Server-Side Misconfiguration
-Severity: Medium
-Type: Information Disclosure / Misconfiguration
-Status: Remediated
+### 🔐 Session Cookie Persistence (Authentication Bypass)
 
-📄 Full writeup:
+* **Severity:** High
+* **Category:** Broken Authentication
+* **Impact:** Account Takeover
 
-🧠 Methodology
+➡️ [View Writeup](./writeups/session-cookie-persistence.md)
 
-My general testing approach includes:
+---
 
-Reconnaissance & attack surface mapping
-HTTP traffic analysis (Burp Suite)
-Automated + manual fuzzing
-Misconfiguration discovery
-Business logic testing
+### ⚙️ Server Misconfiguration
 
-I prioritise depth over noise — fewer findings, but meaningful ones.
+* **Severity:** Medium
+* **Category:** Information Disclosure
+* **Impact:** Reconnaissance / Attack Surface Exposure
 
-🛠️ Tools I Use
-Burp Suite
-Nmap
-Nuclei
-ffuf / dirsearch
-Browser DevTools
-Custom scripts (when needed)
-🎯 Focus Areas
-Web application security
-Server misconfigurations
-Authentication & access control flaws
-Information disclosure
-API security
-📈 Why This Repo Exists
+➡️ [View Writeup](./writeups/server-misconfiguration.md)
 
-Most people spam reports or chase low-quality bugs.
+---
 
-This repo is the opposite:
+## 🧠 Methodology
 
-Clean documentation
-Realistic findings
-Strong reporting style
-Focus on skills that actually get you paid
-👨‍💻 About Me
+My testing approach prioritizes **depth over volume**:
 
-Yoonus K Y
-Cybersecurity enthusiast | Bug bounty researcher
+* Manual testing over blind automation
+* Reconnaissance-driven analysis
+* Authentication & session handling flaws
+* Business logic vulnerabilities
+* Chaining low-impact issues into real exploits
 
-🌐 Portfolio: https://yoonas18.github.io/portfolio
-💼 LinkedIn: https://linkedin.com/in/yoonusky
-🐛 Bugcrowd: https://bugcrowd.com/Yoonas18
-💻 GitHub: https://github.com/Yoonas18
+---
+
+## 🛠️ Tools
+
+* Burp Suite
+* Nmap
+* Nuclei
+* ffuf
+* Browser DevTools
+
+---
+
+## 🎯 Focus Areas
+
+* Broken authentication
+* Session management flaws
+* IDOR / access control issues
+* Business logic vulnerabilities
+* Misconfigurations (only when impactful)
+
+---
+
+## ⚠️ Responsible Disclosure
+
+* All findings are responsibly disclosed
+* Sensitive details are redacted
+* No real user data is exposed
+* Content is for educational purposes only
+
+---
+
+## 👨‍💻 About Me
+
+**Yoonus K Y**
+Bug bounty researcher | Cybersecurity enthusiast
+
+* 🌐 Portfolio: https://yoonas18.github.io/portfolio
+* 💼 LinkedIn: https://linkedin.com/in/yoonusky
+* 🐛 Bugcrowd: https://bugcrowd.com/Yoonas18
+* 💻 GitHub: https://github.com/Yoonas18
+
+---
+
+## ⚡ Final Note
+
+Most bug bounty reports fail because they lack real impact.
+
+This repository focuses on vulnerabilities that:
+
+* Break real security assumptions
+* Can be exploited in practice
+* Demonstrate meaningful risk
+
+---
