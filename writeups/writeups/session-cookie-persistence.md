@@ -5,7 +5,7 @@
 **Vulnerability Class:** Broken Authentication / Session Management
 **Severity:** High (Potential Account Takeover)
 **Status:** Responsibly Disclosed — Issue Resolved
-**Date of Discovery:** [Add Date]
+**Date of Discovery:** 22/12/2025
 
 ---
 
@@ -65,15 +65,7 @@ This behavior allows an attacker with access to previously issued session cookie
 
 ---
 
-## 📸 Evidence
 
-* Screenshot 1: Active session before logout
-* Screenshot 2: Successful logout
-* Screenshot 3: Session restored using imported cookies
-
-*(Attach screenshots in your repo for credibility)*
-
----
 
 ## 💥 Impact Analysis
 
